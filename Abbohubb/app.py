@@ -1,18 +1,11 @@
-# app.py
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 import os
 import uuid
 from datetime import datetime
 
-# Alleen nodig als je environment variables gebruikt
-# (Bijvoorbeeld SECRET_KEY uit .env)
+# Alleen nodig als je environment variables gebruikt (.env-bestand)
 from dotenv import load_dotenv
 
-from flask import (
-    Flask, render_template, request,
-    redirect, url_for, flash
-)
-from flask import jsonify, request, redirect, url_for, flash, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
@@ -27,30 +20,26 @@ from wtforms.validators import DataRequired
 from sqlalchemy.orm import joinedload
 from flask_wtf.csrf import CSRFProtect
 
-from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
-import os
-from chatbot import train_chatbot as train_chatbot_model  # Zorg dat je de train_chatbot functie importeert uit chatbot.py
+from chatbot import train_chatbot as train_chatbot_model
 from sklearn.pipeline import make_pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
 
+# Laad .env-variabelen (optioneel)
+load_dotenv()
 
-
-# Maak de Flask-app aan
+# Maak de Flask-app aan (één keer!)
 app = Flask(__name__, static_url_path='/static', static_folder='static')
+
+# Flask configuratie
 app.config['SECRET_KEY'] = 'jouw_geheime_sleutel'
 
 # Activeer CSRF-bescherming
 csrf = CSRFProtect(app)
 
-# Laad .env-variabelen (optioneel)
-load_dotenv()
-
-# ---------------------------------------
-# Configuratie
 # ---------------------------------------
 # Haal SECRET_KEY op uit de environment, met fallback
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback-secret-key')
