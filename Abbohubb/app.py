@@ -37,10 +37,10 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+
 
 # Maak de Flask-app aan
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.config['SECRET_KEY'] = 'jouw_geheime_sleutel'
 
 # Activeer CSRF-bescherming
