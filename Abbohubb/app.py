@@ -1,8 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+# app.py
+from flask import Flask
 import os
 import uuid
 from datetime import datetime
+
+# Alleen nodig als je environment variables gebruikt
+# (Bijvoorbeeld SECRET_KEY uit .env)
 from dotenv import load_dotenv
+
+from flask import (
+    Flask, render_template, request,
+    redirect, url_for, flash
+)
+from flask import jsonify, request, redirect, url_for, flash, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
@@ -11,22 +21,28 @@ from flask_login import (
     login_required, logout_user, current_user
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_wtf import FlaskForm, CSRFProtect
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired
 from sqlalchemy.orm import joinedload
+from flask_wtf.csrf import CSRFProtect
+
+from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
-from chatbot import train_chatbot as train_chatbot_model
+import os
+from chatbot import train_chatbot as train_chatbot_model  # Zorg dat je de train_chatbot functie importeert uit chatbot.py
 from sklearn.pipeline import make_pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
 
+app = Flask(__name__, static_url_path='/static', static_folder='static')
+
 # Maak de Flask-app aan
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'jouw_geheime_sleutel'
-    
+
 # Activeer CSRF-bescherming
 csrf = CSRFProtect(app)
 
