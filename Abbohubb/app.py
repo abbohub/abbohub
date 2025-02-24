@@ -1,6 +1,5 @@
 # app.py
 from flask import Flask
-app = Flask(__name__)
 import os
 import uuid
 from datetime import datetime
