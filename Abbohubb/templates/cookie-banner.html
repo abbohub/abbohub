@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookieverklaring</title>
+    <style>
+        #cookie-banner, #cookie-settings {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            font-family: Arial, sans-serif;
+            z-index: 10000;
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+        }
+        #cookie-banner p, #cookie-settings p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 8px;
+            transition: background-color 0.3s;
+        }
+        .accept { background: #0A8754; color: white; }
+        .accept:hover { background: #08663f; }
+        .decline { background: #F44336; color: white; }
+        .decline:hover { background: #d32f2f; }
+        .settings { background: #2196F3; color: white; }
+        .settings:hover { background: #1976D2; }
+        .close-settings { background: #9E9E9E; color: white; }
+        .close-settings:hover { background: #757575; }
+    </style>
+</head>
+<body>
+
+<div id="cookie-banner">
+    <p>Wij gebruiken cookies om uw ervaring op deze website zo optimaal mogelijk te maken. Pas uw voorkeuren aan via 'Instellingen' of klik op 'Accepteren' om verder te gaan.</p>
+    <button class="accept" onclick="setCookieConsent(true)">Accepteren</button>
+    <button class="settings" onclick="openSettings()">Instellingen</button>
+    <button class="decline" onclick="setCookieConsent(false)">Weigeren</button>
+</div>
+
+<div id="cookie-settings" style="display:none;">
+    <p><strong>Cookievoorkeuren beheren:</strong></p>
+    <label><input type="checkbox" id="functional" checked disabled> Functionele cookies (verplicht)</label><br>
+    <label><input type="checkbox" id="analytics"> Analytische cookies (helpen ons verbeteren)</label><br>
+    <label><input type="checkbox" id="marketing"> Marketing cookies (persoonlijke advertenties)</label><br><br>
+    <button class="accept" onclick="saveSettings()">Opslaan</button>
+    <button class="close-settings" onclick="closeSettings()">Sluiten</button>
+</div>
+
+<script>
+    function getCookieConsent() {
+        return localStorage.getItem("cookieConsent");
+    }
+
+    function setCookieConsent(consent) {
+        localStorage.setItem("cookieConsent", consent);
+        document.getElementById("cookie-banner").style.display = "none";
+        closeSettings();
+        if (consent) {
+            enableCookies();
+        }
+    }
+
+    function enableCookies() {
+        if (localStorage.getItem("analyticsCookies") === "true") {
+            console.log("Analytische cookies ingeschakeld");
+        }
+        if (localStorage.getItem("marketingCookies") === "true") {
+            console.log("Marketing cookies ingeschakeld");
+        }
+    }
+
+    function openSettings() {
+        document.getElementById("cookie-settings").style.display = "block";
+        document.getElementById("cookie-banner").style.display = "none";
+    }
+
+    function closeSettings() {
+        document.getElementById("cookie-settings").style.display = "none";
+    }
+
+    function saveSettings() {
+        localStorage.setItem("analyticsCookies", document.getElementById("analytics").checked);
+        localStorage.setItem("marketingCookies", document.getElementById("marketing").checked);
+        closeSettings();
+        enableCookies();
+    }
+
+    window.onload = function() {
+        if (getCookieConsent() === null) {
+            document.getElementById("cookie-banner").style.display = "block";
+        } else {
+            enableCookies();
+        }
+    };
+</script>
+
+</body>
+</html>
